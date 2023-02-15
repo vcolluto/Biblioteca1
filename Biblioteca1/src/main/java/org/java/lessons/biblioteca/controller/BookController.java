@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/books")
@@ -19,9 +20,16 @@ public class BookController {
 	private BookRepository repository;
 	
 	
-	@GetMapping()
-	public String index(Model model) {		
-		List<Book> res=repository.findAll();
+	@GetMapping()		// GET /books oppure GET /books?title=xxx
+	public String index(
+			@RequestParam(name="keyword", required = false) String keyword,
+			Model model) {		
+		List<Book> res;
+		
+		if (keyword!=null && !keyword.isEmpty())
+			res = repository.findByTitleLike("%"+keyword+"%");  //tutti i libri il cui titolo contiene la parola chiave
+		else
+			res = repository.findAll();	//tutti i libri
 		model.addAttribute("elencoLibri", res);
 		return "books/index";
 	}
