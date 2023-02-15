@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Titolo</td>
+				<td>Autore</td>
+				<td>ISBN</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="libro : ${elencoLibri}">
+				<td th:text="${libro.id}"></td>
+				<td th:text="${libro.title}"></td>
+				<td th:text="${libro.author}"></td>
+				<td th:text="${libro.isbn}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
