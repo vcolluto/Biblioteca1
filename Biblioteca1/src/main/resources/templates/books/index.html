@@ -3,6 +3,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+
+<link th:replace="~{fragments/bootstrap :: head}"></link>
 </head>
 <body>
 	<table>
@@ -16,12 +18,15 @@
 		</thead>
 		<tbody>
 			<tr th:each="libro : ${elencoLibri}">
-				<td th:text="${libro.id}"></td>
+				<td>
+				<a th:text="${libro.id}" th:href="@{'books/'+ ${libro.id}}"></a>
+				</td>
 				<td th:text="${libro.title}"></td>
 				<td th:text="${libro.author}"></td>
 				<td th:text="${libro.isbn}"></td>
 			</tr>
 		</tbody>
 	</table>
+	<script th:replace="~{fragments/bootstrap :: script}"></script>
 </body>
 </html>
