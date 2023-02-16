@@ -7,12 +7,15 @@ import org.java.lessons.biblioteca.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
@@ -55,10 +58,12 @@ public class BookController {
 	
 	@PostMapping("/create")  	//gestirà le richieste di tipo POST di tipo /books/create
 	public String store(
-		@ModelAttribute("book") Book formBook, 
+		@Valid @ModelAttribute("book") Book formBook, 
+		BindingResult bindingResult,
 		Model model){
 		
-		// TODO: validazione
+		if (bindingResult.hasErrors())
+			return "books/create";
 		
 		repository.save(formBook);
 		

@@ -11,16 +11,38 @@
 	<hr/>
 	<form id="book-form" th:object="${book}"
 	  th:action="@{/books/create}"  method="post">
+	  	<ul>
+	      <li 
+	         th:each="err : ${#fields.allErrors()}" 
+	         th:text="${err}" class="text-danger">
+	      </li>
+  		</ul>
 	  	<div class="row">
 	  	<div class="col-8">
 	  	<label for="title" class="form-label">Titolo</label>
-  		<input type="text" class="form-control" id="title" th:field="*{title}">
+  		<input type="text" class="form-control" id="title" th:field="*{title}" th:errorClass="is-invalid">  			
+		<div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+			<ul>
+			   <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
+			</ul>
+  		</div>
   		
   		<label for="author" class="form-label">Autore</label>
-  		<input type="text" class="form-control" id="author" th:field="*{author}">
+  		<input type="text" class="form-control" id="author" th:field="*{author}" th:errorClass="is-invalid">
+  		<div th:if="${#fields.hasErrors('author')}" class="invalid-feedback">
+			<ul>
+			   <li th:each="err : ${#fields.errors('author')}" th:text="${err}"></li>
+			</ul>
+  		</div>
+  		
   		
 	  	<label for="isbn" class="form-label">ISBN</label>
-  		<input type="text" class="form-control" id="isbn" th:field="*{isbn}">
+  		<input type="text" class="form-control" id="isbn" th:field="*{isbn}" th:errorClass="is-invalid">
+  		<div th:if="${#fields.hasErrors('isbn')}" class="invalid-feedback">
+			<ul>
+			   <li th:each="err : ${#fields.errors('isbn')}" th:text="${err}"></li>
+			</ul>
+  		</div>
   		
   		<button type="submit" class="btn btn-primary">Salva</button>
   		</div>
