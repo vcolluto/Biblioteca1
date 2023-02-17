@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -90,7 +89,12 @@ public class BookController {
 		if (bindingResult.hasErrors())
 			return "books/edit";
 		
-		repository.save(formBook);
+		if (repository.findByIsbn(formBook.getIsbn()).size()>0)
+			System.out.println("Isbn duplicato");
+		else
+			repository.save(formBook);
+		
+		
 		
 		return "redirect:/books";
 	}
