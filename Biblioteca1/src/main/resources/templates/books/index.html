@@ -25,6 +25,13 @@
 				<td th:text="${libro.title}"></td>
 				<td th:text="${libro.author}"></td>
 				<td th:text="${libro.isbn}"></td>
+				<td>
+					<form action="#" th:action="@{'/books/delete/{id}'(id=${libro.id})}" method="post">
+					  <button class="btn btn-primary" type="submit" id="submitButton">
+					    <i class="fas fa-trash-alt"></i>
+					  </button>
+					</form>
+				</td>
 			</tr>
 		</tbody>
 	</table>
