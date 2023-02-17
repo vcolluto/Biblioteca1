@@ -5,6 +5,7 @@ import java.util.List;
 import org.java.lessons.biblioteca.model.Book;
 import org.java.lessons.biblioteca.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,9 +33,9 @@ public class BookController {
 		List<Book> res;
 		
 		if (keyword!=null && !keyword.isEmpty())
-			res = repository.findByTitleLike("%"+keyword+"%");  //tutti i libri il cui titolo contiene la parola chiave
+			res = repository.findByTitleLikeOrderByTitle("%"+keyword+"%");  //tutti i libri il cui titolo contiene la parola chiave
 		else
-			res = repository.findAll();	//tutti i libri
+			res = repository.findAll(Sort.by("title"));	//tutti i libri
 		model.addAttribute("elencoLibri", res);
 		return "books/index";
 	}
@@ -69,5 +70,27 @@ public class BookController {
 		
 		return "redirect:/books"; //genera un altro get
 		
+	}
+	
+	@GetMapping("/edit/{id}")		//richieste GET del tipo /books/edit/xx
+	public String edit(@PathVariable("id") Integer id, Model model) {		
+		Book book=repository.getReferenceById(id);  //lo recupero dal DB
+		
+		model.addAttribute("book", book);
+		return "books/edit";
+	}
+	
+	@PostMapping("/edit/{id}")		//richieste POST del tipo /books/edit/xx
+	public String update(
+			@Valid @ModelAttribute Book formBook,
+			BindingResult bindingResult,
+			Model model) {
+		
+		if (bindingResult.hasErrors())
+			return "books/edit";
+		
+		repository.save(formBook);
+		
+		return "redirect:/books";
 	}
 }

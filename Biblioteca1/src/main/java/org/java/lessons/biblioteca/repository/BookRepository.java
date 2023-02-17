@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
 
-	public List<Book> findByTitleLike(String keyword);
+	public List<Book> findByTitleLikeOrderByTitle(String keyword);
 	public List<Book> findByAuthor(String author);
 }
