@@ -32,6 +32,7 @@ public class Book {
 	@Column(name="isbn_code",  nullable = false , unique = true, columnDefinition = "CHAR(13)" )
 	private String isbn;
 	
+	private String immagine;
 	
 	public String getTitle() {
 		return title;
@@ -57,6 +58,12 @@ public class Book {
 	
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	public String getImmagine() {
+		return immagine;
+	}
+	public void setImmagine(String immagine) {
+		this.immagine = immagine;
 	}
 
 }
