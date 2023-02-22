@@ -9,24 +9,53 @@
 	<div class="container">
 		<h1>Nuovo prestito: <span th:text="${borrowing.book.title}"></span></h1>
 		<hr/>
+		
+	  	<div class="row">
+	  	<div class="col-8">
 		<form id="borrowing-form" 
 			th:action="@{/borrowings/create}" 
 			method="post"
 			th:object="${borrowing}">
+			<ul>
+		      <li 
+		         th:each="err : ${#fields.allErrors()}" 
+		         th:text="${err}" class="text-danger">
+		      </li>
+		 	</ul>
 			
+			<input type="hidden" th:field="${borrowing.book}">
 			<label class="form-label" for="borrowingDate"></label>
-			<input class="form-control" id="borrowingDate" th:field="*{borrowingDate}" type="date">
+			<input class="form-control" id="borrowingDate" th:field="*{borrowingDate}" type="date" th:errorClass="is-invalid">
+			<div th:if="${#fields.hasErrors('borrowingDate')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('borrowingDate')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
+	
 	
 			<label class="form-label" for="returnDate"></label>
-			<input class="form-control" id="returnDate" th:field="*{returnDate}" type="date">
-			
+			<input class="form-control" id="returnDate" th:field="*{returnDate}" type="date" th:errorClass="is-invalid">
+			<div th:if="${#fields.hasErrors('returnDate')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('returnDate')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
+	  		
 			<label class="form-label" for="note"></label>
-			<input class="form-control" id="note" th:field="*{note}" type="text">
+			<input class="form-control" id="note" th:field="*{note}" type="text" th:errorClass="is-invalid">
+			<div th:if="${#fields.hasErrors('note')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('note')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
+			
 			<button type="submit" class="btn btn-primary">Salva</button>
 		  	<a class="btn btn-primary" th:href="@{/borrowings}">Annulla</a>
-
+		
 		
 		</form>
+		</div>
+  		</div>
 	</div>
 
 <script th:replace="~{fragments/bootstrap :: script}"></script>

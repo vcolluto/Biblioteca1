@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 @Entity
 public class Borrowing {
@@ -15,13 +16,15 @@ public class Borrowing {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotNull
+	@NotNull(message = "borrowing date must be not null")
+	@PastOrPresent(message = "borrowing date must be in the past or present" )
 	private LocalDate borrowingDate;
 	
 	private LocalDate returnDate;
 	
 	private String note;
 	
+	@NotNull
 	@ManyToOne					//è possibile avere più istanze di Borrowing associate ad un'istanza di Book
 	private Book book;			//ad ogni prestito è associato un libro
 

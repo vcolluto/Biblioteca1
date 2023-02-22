@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Elenco prestiti</title>
+
+<link th:replace="~{fragments/bootstrap :: head}"></link>
+</head>
+<body>
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Libro</td>
+				<td>Data</td>
+				<td>Restituzione</td>
+				<td>Note</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="prestito : ${elencoPrestiti}">
+				<td>
+				<a th:text="${prestito.id}" th:href="@{'borrowings/'+ ${prestito.id}}"></a>
+				</td>
+				<td th:text="${prestito.book.title}"></td>
+				<td th:text="${#temporals.format(prestito.borrowingDate,'dd/MM/yyyy')}"></td>
+				<td th:text="${#temporals.format(prestito.returnDate,'dd/MM/yyyy')}"></td>
+				<td>
+					<form action="#" th:action="@{'/borrowings/delete/{id}'(id=${prestito.id})}" method="post">
+					  <button class="btn btn-primary" type="submit" id="submitButton">
+					    <i class="fas fa-trash-alt"></i>
+					  </button>
+					</form>
+				</td>
+				<td>
+				<a class="btn btn-primary" th:href="@{'/borrowings/edit/{id}'(id=${prestito.id})}"><i class="fa-regular fa-pen-to-square"></i></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<script th:replace="~{fragments/bootstrap :: script}"></script>
+</body>
+</html>
