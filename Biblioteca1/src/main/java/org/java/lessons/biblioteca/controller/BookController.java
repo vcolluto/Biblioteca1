@@ -44,6 +44,8 @@ public class BookController {
 	@GetMapping("/{id}")		//gestirà le richieste GET di tipo /books/x  (x è l'id del libro)
 	public String detail(@PathVariable("id") Integer id, Model model) {
 		Book book=repository.getReferenceById(id);
+		//System.out.println(book.getTitle());
+		//System.out.println(book.getBorrowings().get(0).getBorrowingDate());
 		model.addAttribute("book", book);
 		return "books/detail";
 	}

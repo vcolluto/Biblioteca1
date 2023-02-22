@@ -3,10 +3,44 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Dettaglio del libro</title>
+<link th:replace="~{fragments/bootstrap :: head}"></link>
 </head>
 <body>
 	<h2 th:text="${book.title}"></h2>
 	<img th:src="${book.immagine}">
-
+	<dl>
+		<dt>Autore:</dt>
+		<dd th:text="${book.author}"></dd>
+		<dt>ISBN:</dt>
+		<dd th:text="${book.isbn}"></dd>
+		<dt>Copie disponibili:</dt>
+		<dd th:text="${book.availableCopies}"></dd>
+	</dl>
+	<h3>Prestiti:</h3>
+	<p th:if="${book.borrowings.size()==0}">non ci sono prestiti</p>
+	<div class="col-12">
+		<a class="btn btn-primary" 
+		th:href="@{|/borrowings/create?bookId=${book.id}|}"
+		th:classAppend="${book.availableCopies}==0 ? 'disabled':''" >Nuovo prestito</a> 
+	<table th:if="${book.borrowings.size()>0}" class="table">
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Data</td>
+				<td>Restituzione</td>
+				<td>Note</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="borrowing : ${book.borrowings}">
+				<td th:text="${borrowing.id}"></td>
+				<td th:text="${#temporals.format(borrowing.borrowingDate,'dd/MM/yyyy')}"></td>
+				<td th:text="${#temporals.format(borrowing.returnDate,'dd/MM/yyyy')}"></td>
+				<td th:text="${borrowing.note}"></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+<script th:replace="~{fragments/bootstrap :: script}"></script>
 </body>
 </html>

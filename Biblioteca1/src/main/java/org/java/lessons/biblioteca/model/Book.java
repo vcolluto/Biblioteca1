@@ -1,13 +1,17 @@
 package org.java.lessons.biblioteca.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -33,6 +37,14 @@ public class Book {
 	private String isbn;
 	
 	private String immagine;
+	
+	@NotNull
+	@PositiveOrZero
+	private Integer availableCopies;
+	
+	
+	@OneToMany(mappedBy = "book")
+	private List<Borrowing> borrowings;
 	
 	public String getTitle() {
 		return title;
@@ -66,4 +78,19 @@ public class Book {
 		this.immagine = immagine;
 	}
 
+	public List<Borrowing> getBorrowings() {
+		return borrowings;
+	}
+	public void setBorrowings(List<Borrowing> borrowings) {
+		this.borrowings = borrowings;
+	}
+	
+	public Integer getAvailableCopies() {
+		return availableCopies;
+	}
+	public void setAvailableCopies(Integer availableCopies) {
+		this.availableCopies = availableCopies;
+	}
+	
+	
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Nuovo prestito</title>
+<link th:replace="~{fragments/bootstrap :: head}"></link>
+</head>
+<body>
+	<div class="container">
+		<h1>Nuovo prestito: <span th:text="${borrowing.book.title}"></span></h1>
+		<hr/>
+		<form id="borrowing-form" 
+			th:action="@{/borrowings/create}" 
+			method="post"
+			th:object="${borrowing}">
+			
+			<label class="form-label" for="borrowingDate"></label>
+			<input class="form-control" id="borrowingDate" th:field="*{borrowingDate}" type="date">
+	
+			<label class="form-label" for="returnDate"></label>
+			<input class="form-control" id="returnDate" th:field="*{returnDate}" type="date">
+			
+			<label class="form-label" for="note"></label>
+			<input class="form-control" id="note" th:field="*{note}" type="text">
+			<button type="submit" class="btn btn-primary">Salva</button>
+		  	<a class="btn btn-primary" th:href="@{/borrowings}">Annulla</a>
+
+		
+		</form>
+	</div>
+
+<script th:replace="~{fragments/bootstrap :: script}"></script>
+</body>
+</html>
