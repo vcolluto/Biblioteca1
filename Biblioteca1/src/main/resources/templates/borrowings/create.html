@@ -9,7 +9,7 @@
 	<div class="container">
 		<h1>Nuovo prestito: <span th:text="${borrowing.book.title}"></span></h1>
 		<hr/>
-		
+		<h2 th:text="|copies: ${borrowing.book.availableCopies}|"></h2>
 	  	<div class="row">
 	  	<div class="col-8">
 		<form id="borrowing-form" 
@@ -24,8 +24,12 @@
 		 	</ul>
 			
 			<input type="hidden" th:field="${borrowing.book}">
-			<label class="form-label" for="borrowingDate"></label>
-			<input class="form-control" id="borrowingDate" th:field="*{borrowingDate}" type="date" th:errorClass="is-invalid">
+			<label class="form-label" for="borrowingDate">Data:</label>
+			<input class="form-control" id="borrowingDate"
+			 
+			 type="date" th:errorClass="is-invalid" 
+			 th:field="*{borrowingDate}" 
+			 >
 			<div th:if="${#fields.hasErrors('borrowingDate')}" class="invalid-feedback">
 				<ul>
 				   <li th:each="err : ${#fields.errors('borrowingDate')}" th:text="${err}"></li>
@@ -33,7 +37,7 @@
 	  		</div>
 	
 	
-			<label class="form-label" for="returnDate"></label>
+			<label class="form-label" for="returnDate">Restituzione:</label>
 			<input class="form-control" id="returnDate" th:field="*{returnDate}" type="date" th:errorClass="is-invalid">
 			<div th:if="${#fields.hasErrors('returnDate')}" class="invalid-feedback">
 				<ul>
@@ -41,7 +45,7 @@
 				</ul>
 	  		</div>
 	  		
-			<label class="form-label" for="note"></label>
+			<label class="form-label" for="note">Note:</label>
 			<input class="form-control" id="note" th:field="*{note}" type="text" th:errorClass="is-invalid">
 			<div th:if="${#fields.hasErrors('note')}" class="invalid-feedback">
 				<ul>
