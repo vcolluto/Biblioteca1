@@ -3,12 +3,15 @@ package org.java.lessons.biblioteca.controller;
 import java.util.List;
 
 import org.java.lessons.biblioteca.model.Book;
+import org.java.lessons.biblioteca.model.Category;
 import org.java.lessons.biblioteca.repository.BookRepository;
+import org.java.lessons.biblioteca.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +26,9 @@ import jakarta.validation.Valid;
 public class BookController {
 
 	@Autowired
-	private BookRepository repository;
-	
+	private BookRepository bookRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@GetMapping()		// GET /books oppure GET /books?title=xxx
 	public String index(
@@ -33,9 +37,9 @@ public class BookController {
 		List<Book> res;
 		
 		if (keyword!=null && !keyword.isEmpty())
-			res = repository.findByTitleLikeOrderByTitle("%"+keyword+"%");  //tutti i libri il cui titolo contiene la parola chiave
+			res = bookRepository.findByTitleLikeOrderByTitle("%"+keyword+"%");  //tutti i libri il cui titolo contiene la parola chiave
 		else
-			res = repository.findAll(Sort.by("title"));	//tutti i libri
+			res = bookRepository.findAll(Sort.by("title"));	//tutti i libri
 		model.addAttribute("elencoLibri", res);
 		return "books/index";
 	}
@@ -43,7 +47,7 @@ public class BookController {
 	
 	@GetMapping("/{id}")		//gestirà le richieste GET di tipo /books/x  (x è l'id del libro)
 	public String detail(@PathVariable("id") Integer id, Model model) {
-		Book book=repository.getReferenceById(id);
+		Book book=bookRepository.getReferenceById(id);
 		//System.out.println(book.getTitle());
 		//System.out.println(book.getBorrowings().get(0).getBorrowingDate());
 		model.addAttribute("book", book);
@@ -54,9 +58,12 @@ public class BookController {
 	public String create(Model model) {
 		Book book=new Book();	//non esiste ancora sul DB
 		//book.setTitle("undefined");
-		model.addAttribute("book", book);
+		List<Category> categoryList=categoryRepository.findAll();
 		
-		return "books/create";
+		model.addAttribute("book", book);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("edit", false);
+		return "books/edit";
 	}
 	
 	@PostMapping("/create")  	//gestirà le richieste di tipo POST di tipo /books/create
@@ -65,10 +72,16 @@ public class BookController {
 		BindingResult bindingResult,
 		Model model){
 		
-		if (bindingResult.hasErrors())
-			return "books/create";
 		
-		repository.save(formBook);
+		if (bookRepository.findByIsbn(formBook.getIsbn()).size()>0)
+			bindingResult.addError(new FieldError("book", "isbn", "duplicate isbn"));
+		
+		if (bindingResult.hasErrors())
+			return "books/edit";
+		
+		
+			
+		bookRepository.save(formBook);
 		
 		return "redirect:/books"; //genera un altro get
 		
@@ -76,9 +89,13 @@ public class BookController {
 	
 	@GetMapping("/edit/{id}")		//richieste GET del tipo /books/edit/xx
 	public String edit(@PathVariable("id") Integer id, Model model) {		
-		Book book=repository.getReferenceById(id);  //lo recupero dal DB
+		Book book=bookRepository.getReferenceById(id);  //lo recupero dal DB
+		
+		List<Category> categoryList=categoryRepository.findAll();
 		
 		model.addAttribute("book", book);
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("edit", true);
 		return "books/edit";
 	}
 	
@@ -91,10 +108,10 @@ public class BookController {
 		if (bindingResult.hasErrors())
 			return "books/edit";
 		
-		if (repository.findByIsbn(formBook.getIsbn()).size()>0)
-			System.out.println("Isbn duplicato");
-		else
-			repository.save(formBook);
+		//if (bookRepository.findByIsbn(formBook.getIsbn()).size()>0)
+		//	System.out.println("Isbn duplicato");
+		//else
+			bookRepository.save(formBook);
 		
 		
 		
@@ -104,7 +121,7 @@ public class BookController {
 	@PostMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
 	 
-	   repository.deleteById(id);
+	   bookRepository.deleteById(id);
 	   
 	   return "redirect:/books";
 	}

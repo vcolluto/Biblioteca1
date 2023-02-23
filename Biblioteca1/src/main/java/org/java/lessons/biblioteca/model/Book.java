@@ -2,6 +2,7 @@ package org.java.lessons.biblioteca.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,14 +33,13 @@ public class Book {
 	private String author;
 	
 	@Size(min = 13, max = 13, message = "isbn must be 13 characters")
-	@NotNull(message="isbn must be not null")
-	
+	@NotNull(message="isbn must be not null")	
 	@Column(name="isbn_code",  nullable = false , unique = true, columnDefinition = "CHAR(13)" )
 	private String isbn;
 	
 	private String immagine;
 	
-	@NotNull
+	@NotNull(message="available copies must be not null")
 	@PositiveOrZero
 	private Integer availableCopies;
 	
@@ -47,7 +47,7 @@ public class Book {
 	@OneToMany(mappedBy = "book")
 	private List<Borrowing> borrowings;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Category> categories;
 	
 	public String getTitle() {
@@ -94,6 +94,13 @@ public class Book {
 	}
 	public void setAvailableCopies(Integer availableCopies) {
 		this.availableCopies = availableCopies;
+	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 	
 	

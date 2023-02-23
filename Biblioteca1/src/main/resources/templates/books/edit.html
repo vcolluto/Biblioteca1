@@ -7,10 +7,10 @@
 </head>
 <body>
 <div class="container">
-	<h1>Modifica libro</h1>
+	<h1 th:text="${edit}?'Modifica libro':'Nuovo libro'"></h1>
 	<hr/>
 	<form id="book-form" th:object="${book}"
-	  th:action="@{/books/edit/{id}(id=${book.id})}"  method="post">
+	  th:action="${edit}?@{/books/edit/{id}(id=${book.id})}:@{/books/create}"  method="post">
 	  	<ul>
 	      <li 
 	         th:each="err : ${#fields.allErrors()}" 
@@ -19,34 +19,52 @@
   		</ul>
 	  	<div class="row">
 	  	<div class="col-8">
-	  	<label for="title" class="form-label">Titolo</label>
-  		<input type="text" class="form-control" id="title" th:field="*{title}" th:errorClass="is-invalid">  			
-		<div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
-			<ul>
-			   <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
-			</ul>
-  		</div>
+		  	<label for="title" class="form-label">Titolo</label>
+	  		<input type="text" class="form-control" id="title" th:field="*{title}" th:errorClass="is-invalid">  			
+			<div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('title')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
   		
-  		<label for="author" class="form-label">Autore</label>
-  		<input type="text" class="form-control" id="author" th:field="*{author}" th:errorClass="is-invalid">
-  		<div th:if="${#fields.hasErrors('author')}" class="invalid-feedback">
-			<ul>
-			   <li th:each="err : ${#fields.errors('author')}" th:text="${err}"></li>
-			</ul>
-  		</div>
+	  		<label for="author" class="form-label">Autore</label>
+	  		<input type="text" class="form-control" id="author" th:field="*{author}" th:errorClass="is-invalid">
+	  		<div th:if="${#fields.hasErrors('author')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('author')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
   		
   		
-	  	<label for="isbn" class="form-label">ISBN</label>
-  		<input type="text" class="form-control" id="isbn" th:field="*{isbn}" th:errorClass="is-invalid">
-  		<div th:if="${#fields.hasErrors('isbn')}" class="invalid-feedback">
-			<ul>
-			   <li th:each="err : ${#fields.errors('isbn')}" th:text="${err}"></li>
-			</ul>
-  		</div>
+		  	<label for="isbn" class="form-label">ISBN</label>
+	  		<input type="text" class="form-control" id="isbn" th:field="*{isbn}" th:errorClass="is-invalid">
+	  		<div th:if="${#fields.hasErrors('isbn')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('isbn')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
+	  		
+	  		<label for="availableCopies" class="form-label">Copie</label>
+	  		<input type="number" class="form-control" id="availableCopies" th:field="*{availableCopies}" th:errorClass="is-invalid">
+	  		<div th:if="${#fields.hasErrors('availableCopies')}" class="invalid-feedback">
+				<ul>
+				   <li th:each="err : ${#fields.errors('availableCopies')}" th:text="${err}"></li>
+				</ul>
+	  		</div>
   		
-  		<button type="submit" class="btn btn-primary">Salva</button>
-  		<a class="btn btn-primary" th:href="@{/books}">Annulla</a>
-  		</div>
+	  		<button type="submit" class="btn btn-primary">Salva</button>
+	  		<a class="btn btn-primary" th:href="@{/books}">Annulla</a>
+	  		</div>
+	  		<div class="col-4">
+	  			<h3>Categorie:</h3>
+	  			<div th:each="category : ${categoryList}" class="form-check">
+	  				<input type="checkbox" class="form-check-input" 
+	  					th:value="${category.id}" th:field="*{categories}"
+	  					th:id="|category_${category.id}">
+	  				<label class="form-check-label" 
+	  				th:text="${category.name}" th:for="|category_${category.id}"></label>
+	  			</div>
+	  		</div>
   		</div>
 	</form>
 	</div>
