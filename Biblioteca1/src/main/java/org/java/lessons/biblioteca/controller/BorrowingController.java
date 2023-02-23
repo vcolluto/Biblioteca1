@@ -53,6 +53,7 @@ public class BorrowingController {
 		BindingResult bindingResult,
 		Model model){
 		
+		borrowingService.validate(formBorrowing, bindingResult);	//validazioni di logica applicativa
 		
 		if (bindingResult.hasErrors())
 			return "borrowings/create";			

@@ -21,6 +21,7 @@ public class Borrowing {
 	@PastOrPresent(message = "borrowing date must be in the past or present" )
 	private LocalDate borrowingDate;
 	
+	@PastOrPresent(message = "return date must be in the past or present" )
 	private LocalDate returnDate;
 	
 	private String note;

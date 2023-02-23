@@ -9,6 +9,8 @@ import org.java.lessons.biblioteca.repository.BookRepository;
 import org.java.lessons.biblioteca.repository.BorrowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 @Service
 public class BorrowingService {
@@ -43,6 +45,19 @@ public class BorrowingService {
 	
 	public List<Borrowing> findAll() {
 		return borrowingRepository.findAll();
+	}
+	
+	public boolean validate(Borrowing borrowing,BindingResult bindingResult) {
+		boolean res=true;
+		
+		if (borrowing.getReturnDate()!=null && borrowing.getBorrowingDate()!=null &&
+			borrowing.getReturnDate().isBefore(borrowing.getBorrowingDate())) {
+			bindingResult.addError(new FieldError("borrowing", "returnDate", "return date must be after borrowing date"));
+			res=false;
+		}
+		//eventuali altre validazioni
+		return res;		
+			
 	}
 
 }
