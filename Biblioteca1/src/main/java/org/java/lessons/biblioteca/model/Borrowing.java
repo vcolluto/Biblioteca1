@@ -2,6 +2,7 @@ package org.java.lessons.biblioteca.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class Borrowing {
 	private String note;
 	
 	@NotNull
-	@ManyToOne					//è possibile avere più istanze di Borrowing associate ad un'istanza di Book
+	@ManyToOne()					//è possibile avere più istanze di Borrowing associate ad un'istanza di Book
 	private Book book;			//ad ogni prestito è associato un libro
 
 	public Integer getId() {

@@ -44,10 +44,10 @@ public class Book {
 	private Integer availableCopies;
 	
 	
-	@OneToMany(mappedBy = "book")
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 	private List<Borrowing> borrowings;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany()
 	private List<Category> categories;
 	
 	public String getTitle() {

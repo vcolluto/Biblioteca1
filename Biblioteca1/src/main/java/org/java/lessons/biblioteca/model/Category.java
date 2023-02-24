@@ -2,6 +2,10 @@ package org.java.lessons.biblioteca.model;
 
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +25,7 @@ public class Category {
 	private String name;
 	
 	@ManyToMany(mappedBy = "categories")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Book> books;
 
 	public Integer getId() {
