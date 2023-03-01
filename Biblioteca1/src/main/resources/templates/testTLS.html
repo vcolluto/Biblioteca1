@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+  This content is only shown to authenticated users.
+</div>
+<div sec:authorize="hasAuthority('ADMIN')">
+  This content is only shown to administrators.
+</div>
+<div sec:authorize="hasAuthority('USER')">
+  This content is only shown to users.
+</div>
+Logged user: <span sec:authentication="name">xxx</span>
+Roles: <span sec:authentication="principal.authorities">yyy</span>
+</body>
+</html>
